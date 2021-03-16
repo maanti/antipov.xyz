@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: 🔨 Build Project
+        uses: mbursi/jekyll-build-only-action@v1.0.0
+
+      - name: 📂 Sync files
+        run: scp ./_site/* ${{ secrets.SCP_URL }}:/var/www/html
+        shell: bash
